@@ -10,22 +10,44 @@ The goal of this project is to simulate how **production systems handle backgrou
 # Architecture Overview
 
 ```
-Client
+Client (Web / API Consumer)
  │
  ▼
-Express API Server
+HTTP Server (Node.js)
+ │
+ ├── Express REST API
+ │
+ └── Socket.IO (real-time events)
  │
  ▼
-PostgreSQL (Job Lifecycle Tracking)
+Authentication + API Key Middleware
+ │
+ ▼
+PostgreSQL
+(Job Lifecycle + Users + Workers)
  │
  ▼
 Redis Queue (BullMQ)
  │
- ▼
-Worker System
+ ├── Rate Limiting
+ ├── Job Deduplication
+ ├── Delayed Jobs
  │
  ▼
-Job Handlers
+Workers
+ │
+ ├── Retry mechanism
+ ├── Priority execution
+ ├── Job Handlers
+ │
+ ▼
+Dead Letter Queue
+ │
+ ▼
+WebSocket Events
+ │
+ ▼
+Monitoring Dashboard (Bull Board)
 ```
 
 ---
@@ -51,6 +73,29 @@ Example request:
 }
 ```
 
+Getting background jobs through an HTTP API.
+
+```
+GET /job/:id
+```
+
+Example response:
+
+```json
+{
+  "id": "ca2a3e7a-3f7b-4650-a75f-d3c1adc8b8e7",
+  "type": "send_email",
+  "status": "completed",
+  "payload": {
+    "to": "test@gmail.com"
+  },
+  "result": "completed",
+  "attempts": 0,
+  "createdAt": "2026-03-11T09:30:27.177Z",
+  "updatedAt": "2026-03-11T09:30:30.394Z"
+}
+```
+
 ---
 
 ### Worker Based Processing
@@ -65,8 +110,8 @@ Each job type has its own handler.
 
 Example handlers:
 
-* EmailHandler
-* ReportHandler
+- EmailHandler
+- ReportHandler
 
 A **JobHandlerFactory** dynamically resolves the correct handler.
 
@@ -91,25 +136,25 @@ failed
 
 Backend
 
-* Node.js
-* Express
-* TypeScript
+- Node.js
+- Express
+- TypeScript
 
 Queue System
 
-* BullMQ
-* Redis
+- BullMQ
+- Redis
 
 Database
 
-* PostgreSQL
-* Prisma ORM
+- PostgreSQL
+- Prisma ORM
 
 Architecture
 
-* SOLID Principles
-* Repository Pattern
-* Factory Pattern
+- SOLID Principles
+- Repository Pattern
+- Factory Pattern
 
 ---
 
@@ -123,7 +168,11 @@ src
 │   └── redis.ts
 │
 ├── controllers
-│   └── jobController.ts
+│   ├── jobController.ts
+│   └── metricsController.ts
+│
+├── dashboard
+│   └── queueDashboard.ts
 │
 ├── handlers
 │   ├── emailHandler.ts
@@ -131,10 +180,14 @@ src
 │   └── jobHandlerFactory.ts
 │
 ├── queues
+│   ├── deadLetterQueue.ts
 │   └── jobQueue.ts
 │
 ├── repositories
 │   └── jobRepository.ts
+│
+├── service
+│   └── workerHealth.ts
 │
 ├── workers
 │   └── jobWorker.ts
@@ -191,15 +244,17 @@ npx ts-node src/workers/jobWorker.ts
 
 # Roadmap
 
-Upcoming features:
-
-* Retry mechanism
-* Delayed jobs
-* Priority queues
-* Dead letter queue
-* Webhook callbacks
-* Job dashboard
-* Worker monitoring
+- Distributed workers
+- Retry mechanism
+- Delayed jobs
+- Priority jobs
+- Dead letter queue
+- Queue metrics
+- Worker health monitoring
+- API key authentication
+- Job deduplication
+- Real-time updates
+- Monitoring dashboard
 
 ---
 
@@ -209,7 +264,7 @@ This project demonstrates how **modern backend systems handle asynchronous workl
 
 It focuses on:
 
-* Distributed processing
-* Background job management
-* Scalable backend architecture
-* Clean architecture using SOLID principles
+- Distributed processing
+- Background job management
+- Scalable backend architecture
+- Clean architecture using SOLID principles
