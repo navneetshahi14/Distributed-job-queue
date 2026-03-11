@@ -2,26 +2,55 @@ import { Worker } from "bullmq";
 import { connection } from "../config/redis";
 import { EmailHandler } from "../handlers/emailHandler";
 import { JobHandlerFactory } from "../handlers/jobHandlerFactory";
+import { JobRespository } from "../repositories/jobRepository";
+import { deadLetterQueue } from "../queues/deadLetterQueue";
+import { updateHeartbeat } from "../service/workerHealth";
+import { io } from "../server";
 
+const jobRepo = new JobRespository();
 
 const worker = new Worker(
-    "jobs",
-    async(job)=>{
-        console.log("Job received:",job.name);
-        const handler = JobHandlerFactory.getHandler(job.name)
+  "jobs",
+  async (job: any) => {
+    console.log("Job received:", job.type);
+    const { jobId, payload } = job.data;
+    await jobRepo.updateStatus(jobId, "processing");
 
-        await handler.handle(job.data);
-    },
-    {
-        connection:connection as any
-    }
-)
+    const handler = JobHandlerFactory.getHandler(job.name);
 
-worker.on("completed",(job)=>{
-    console.log(`Job ${job.id} completed`)
-})
+    await handler.handle(payload);
+    await jobRepo.completeJob(jobId, "completed");
 
-worker.on("failed",(job,err)=>{
-    console.log(`Job ${job?.id} failed`,err)
-})
+    setInterval(async () => {
+      await updateHeartbeat("worker-1");
+    }, 5000);
+  },
+  {
+    connection: connection as any,
+  },
+);
 
+worker.on("stalled", (jobId) => {
+  console.log(`Job ${jobId} stalled`);
+});
+
+worker.on("completed", async (job) => {
+  io.emit("job_completed", {
+    jobId: job.id,
+  });
+  console.log(`Job ${job?.id} completed`);
+});
+
+worker.on("failed", async (job: any) => {
+  console.log(`Job ${job?.id} failed attempt ${job.attemptsMade}`);
+
+  const { jobId } = job.data;
+
+  if (job.attemptsMade >= job.opts.attempts) {
+    console.log("Moving job to dead letter queue");
+
+    await deadLetterQueue.add("dead-job", job.data);
+
+    await jobRepo.failJob(jobId);
+  }
+});

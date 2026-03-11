@@ -1,12 +1,34 @@
 import { Request, Response } from "express";
 import { jobQueue } from "../queues/jobQueue";
+import { JobRespository } from "../repositories/jobRepository";
+import { delay } from "bullmq";
+
+const jobRepo = new JobRespository();
 
 export const CreateJob = async (req: Request, res: Response) => {
   const { type, payload } = req.body;
 
-  const job = await jobQueue.add(type, payload);
+  const job = await jobRepo.createJob(type, payload);
+  console.log(job);
+
+  await jobQueue.add(
+    type,
+    { jobId: job.id, payload },
+    {
+      jobId: job.id,
+      attempts: 3,
+      backoff: {
+        type: "exponential",
+        delay: 5000,
+      },
+      delay: 10000,
+      priority: 5,
+    },
+  );
 
   res.json({
-    job,
+    jobId: job.id,
+    status: "pending",
+    job: job,
   });
 };
