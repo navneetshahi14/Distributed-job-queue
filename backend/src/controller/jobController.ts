@@ -6,10 +6,13 @@ import { delay } from "bullmq";
 const jobRepo = new JobRespository();
 
 export const CreateJob = async (req: Request, res: Response) => {
+
+  const userId = req.user.id
+  const apiKeyId = req.apiKey.id
   const { type, payload } = req.body;
 
-  const job = await jobRepo.createJob(type, payload);
-  console.log(job);
+  const job = await jobRepo.createJob(type, payload, userId,apiKeyId);
+
 
   await jobQueue.add(
     type,

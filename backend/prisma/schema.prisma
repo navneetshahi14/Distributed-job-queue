@@ -13,15 +13,45 @@ datasource db {
   provider = "postgresql"
 }
 
-model Job {
+model User {
   id        String   @id @default(uuid())
-  type      String
-  status    String
-  payload   Json
-  result    Json?
-  attempts  Int      @default(0)
+  email     String   @unique
+  password  String?
+  provider  String   @default("email")
+  providerId String?
+
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+  apiKeys ApiKey[]
+  jobs    Job[]
+}
+
+model ApiKey {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  name      String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  job Job[]
+}
+
+model Job {
+  id       String @id @default(uuid())
+  type     String
+  status   String
+  payload  Json
+  result   Json?
+  attempts Int    @default(0)
+
+  userId   String
+  apiKeyId String
+
+  user   User   @relation(fields: [userId], references: [id])
+  apiKey ApiKey @relation(fields: [apiKeyId], references: [id])
+
+  createdAt DateTime @default(now())
 }
 
 model Worker {

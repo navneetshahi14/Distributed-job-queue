@@ -1,12 +1,15 @@
 import { prisma } from "../config/prisma";
 
 export class JobRespository {
-  async createJob(type: string, payload: any) {
+  async createJob(type: string, payload: any, userId: any, apiKeyId: any) {
     return prisma.job.create({
       data: {
         type,
         status: "pending",
         payload,
+
+        userId,
+        apiKeyId,
       },
     });
   }
@@ -25,11 +28,11 @@ export class JobRespository {
         status: "completed",
         result,
       },
-    }); 
+    });
   }
 
   async failJob(id: string) {
-    console.log("somethings",id)
+    console.log("somethings", id);
     return prisma.job.update({
       where: { id },
       data: { status: "failed" },
