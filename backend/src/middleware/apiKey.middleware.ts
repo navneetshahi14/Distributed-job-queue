@@ -25,6 +25,15 @@ export const apiKeyMiddleware = async (
     });
   }
 
+  await prisma.apiKey.update({
+    where: { id: key.id },
+    data: {
+      usageCount: {
+        increment: 1,
+      },
+    },
+  });
+
   req.user = key.user;
   req.apiKey = key;
 

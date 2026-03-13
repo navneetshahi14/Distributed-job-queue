@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "ApiKey" ADD COLUMN     "permissions" TEXT[],
+ADD COLUMN     "rateLimit" INTEGER NOT NULL DEFAULT 100,
+ADD COLUMN     "usageCount" INTEGER NOT NULL DEFAULT 0;

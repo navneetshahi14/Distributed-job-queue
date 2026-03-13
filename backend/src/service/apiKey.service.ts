@@ -10,6 +10,8 @@ export class ApiKeyService {
         name,
         key,
         userId,
+        permissions: ["create_jobs"],
+        rateLimit: 100,
       },
     });
 
