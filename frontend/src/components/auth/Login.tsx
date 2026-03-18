@@ -9,14 +9,23 @@ import { EyeIcon, EyeOffIcon, SearchIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import AuthHeader from "./AuthHeader";
+import { motion } from "motion/react";
 
 const Login = () => {
   const [showPass, setShowPass] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
-    <div className="h-screen w-full flex flex-col gap-10 items-center ">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="h-screen w-full flex flex-col gap-10 items-center "
+    >
       <AuthHeader authType="login" />
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         className="bg-background rounded-xl md:rounded-2xl lg:rounded-3xl shadow-2xs flex flex-col items-center justify-center w-[70%] md:w-[50%] lg:w-[30%] gap-5 "
         style={{ padding: "30px 0px" }}
       >
@@ -53,12 +62,18 @@ const Login = () => {
           <p className="text-sm flex justify-start m-0 w-[80%]">
             Having trouble in sign in?
           </p>
-          <Button
-            className="w-[80%] text-slate-800 bg-[#FFC584]"
-            style={{ padding: "20px" }}
+          <motion.div
+            className="w-full flex justify-center"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            Sign in
-          </Button>
+            <Button
+              className="w-[80%] text-slate-800 bg-[#FFC584]"
+              style={{ padding: "20px" }}
+            >
+              Sign In
+            </Button>
+          </motion.div>
         </div>
         <div className="w-[90%] flex flex-col justify-center items-center gap-5">
           <h1 className="">---- Or Sign in with ----</h1>
@@ -73,11 +88,16 @@ const Login = () => {
         <div className="">
           <p className="text-sm">
             Don't have an account?{" "}
-            <span onClick={()=>navigate("/signup")} className="font-bold cursor-pointer">SignUp</span>
+            <span
+              onClick={() => navigate("/signup")}
+              className="font-bold cursor-pointer"
+            >
+              SignUp
+            </span>
           </p>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
