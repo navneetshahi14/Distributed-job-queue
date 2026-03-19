@@ -6,8 +6,8 @@ const HeroSection = () => {
     <>
       <div className="flex flex-col gap-10 justify-center items-center min-h-[90vh] text-[#014734] overflow-hidden">
         <div
-          className="absolute w-[80%] h-[80%] bg-box-grid  rounded-xl  [mask-image:radial-gradient(circle,rgba(0,0,0,1)_40%,rgba(0,0,0,0)_100%)] 
-    [-webkit-mask-image:radial-gradient(circle,rgba(0,0,0,1)_40%,rgba(0,0,0,0)_100%)]"
+          className="absolute w-[80%] h-[80%] bg-box-grid  rounded-xl blur-[1px]
+  mask-[radial-gradient(circle,rgba(0,0,0,1)_35%,rgba(0,0,0,0)_100%)]"
         ></div>
 
         {/* 🌌 Glow */}
