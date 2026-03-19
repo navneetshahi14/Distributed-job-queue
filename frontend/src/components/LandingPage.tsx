@@ -7,6 +7,7 @@ const LandingPage = () => {
     <div className='min-h-screen w-full flex flex-col items-center bg-[#F6F6F4]'>
         <Navbar />
         <HeroSection />
+        <div className="bg-black w-full h-screen"></div>
     </div>
   )
 }

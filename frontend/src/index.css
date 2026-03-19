@@ -127,11 +127,10 @@
 
 .bg-box-grid {
   background-image:
-    linear-gradient(to right, rgba(0, 0, 0, 0.567) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.505) 1px, transparent 1px);
+    linear-gradient(to right, rgba(0, 0, 0, 0.567) 0.1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.505) 0.1px, transparent 1px);
   background-size: 140px 60px;
   background-position: center;
-  /* border-radius: 100%; */
 }
 
 * {

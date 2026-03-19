@@ -6,7 +6,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   return (
     <div
-      className="flex justify-between w-full max-h-[10vh] z-10"
+      className="flex justify-between w-full max-h-[10vh] bg-transparent"
       style={{ padding: "20px" }}
     >
       <div className=" flex gap-20 justify-center items-center">
