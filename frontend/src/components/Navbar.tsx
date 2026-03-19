@@ -1,27 +1,33 @@
-import React from 'react'
-import { Button } from './ui/button'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Button } from "./ui/button";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   return (
-    <div className='max-h-[8vh] flex justify-between items-center w-[80%] bg-amber-50 rounded-b-2xl ' style={{padding:"20px"}}>
-        <h1 className="text-accent-foreground uppercase font-bold ">
-            JobForge
+    <div
+      className="flex justify-between w-full max-h-[10vh] z-10"
+      style={{ padding: "20px" }}
+    >
+      <div className=" flex gap-20 justify-center items-center">
+        <h1
+          onClick={() => navigate("/")}
+          className="font-extrabold text-xl cursor-pointer text-[#014734]"
+        >
+          JobForge
         </h1>
-        <ul className=" flex text-sm uppercase gap-10 [&>li]:cursor-pointer">
-            <li>Home</li>
-            <li>About</li>
-            <li>Contact Us</li>
+        <ul className="flex gap-10 [&>li]:cursor-pointer text-sm justify-center items-center">
+          <li>About Us</li>
+          <li>Contact Us</li>
+          <li>Pricing</li>
         </ul>
-        <div className="">
-            <Button className='cursor-pointer font-normal text-[0.75em] bg-accent-foreground' style={{padding:"12px"}}>
-                <Link to={"/login"}>
-                    Login/SignUp
-                </Link>
-            </Button>
-        </div>
+      </div>
+      <div className="flex gap-4">
+        <Button onClick={()=>navigate("/login")} className="bg-[#f0f0f0] text-[#014734] shadow-2xl  border border-gray-300 capitalize " style={{padding:"20px"}}>Log in</Button>
+        <Button onClick={()=>navigate("/signup")} className="bg-[#014734] text-[#A4CD86] " style={{padding:"20px"}}>Start Now</Button>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
