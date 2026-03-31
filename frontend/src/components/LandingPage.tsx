@@ -4,6 +4,7 @@ import HeroSection from './LandingPage/HeroSection'
 import FeaturesSection from './LandingPage/FeatureSection'
 import ArchitectureSection from './LandingPage/ArchitectureSection'
 import DashboardPreview from './LandingPage/DashboardPreview'
+import CTASection from './LandingPage/CTASection'
 
 const LandingPage = () => {
   return (
@@ -14,6 +15,7 @@ const LandingPage = () => {
         <FeaturesSection />
         <ArchitectureSection />
         <DashboardPreview />
+        <CTASection />
     </div>
   )
 }

@@ -1,7 +1,8 @@
 import React from "react";
 import { motion } from "motion/react";
 import CountUp from "react-countup";
-// import SlotCounter from "react-slot-counter";
+import SlotCounter from "react-slot-counter";
+import ChartSection from "./ChartSection";
 
 const DashboardPreview = () => {
   return (
@@ -42,15 +43,16 @@ const DashboardPreview = () => {
           ].map((stat, i) => (
             <div
               key={i}
-              className=" rounded-xl bg-black/40 border border-green-900"
+              className=" rounded-xl bg-black/35 border border-green-900"
               style={{ padding: "1rem" }}
             >
               <p className="text-sm text-[#014734]">{stat.label}</p>
-              <h3 className="text-2xl font-semibold text-green-400">
-                
-              </h3>
+              <h3 className="text-2xl font-semibold text-green-400"></h3>
               <h3 className="text-2xl font-semibold text-green-400 ">
-                {stat.value}
+                {/* <CountUp start={0} end={stat.value} duration={2.5}>
+                  {({ countUpRef }) => <span ref={countUpRef} />}
+                </CountUp> */}
+                <SlotCounter value={stat.value} />
               </h3>
             </div>
           ))}
@@ -123,6 +125,10 @@ const DashboardPreview = () => {
               ))}
             </tbody>
           </table>
+        </div>
+        <div className="mb-8">
+          <p className="text-gray-400 mb-3">Queue Growth</p>
+          <ChartSection />
         </div>
       </motion.div>
     </div>
