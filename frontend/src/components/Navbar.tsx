@@ -24,7 +24,7 @@ const Navbar = () => {
       </div>
       <div className="flex gap-4">
         <Button onClick={()=>navigate("/login")} className="bg-[#f0f0f0] text-[#014734] shadow-2xl  border border-gray-300 capitalize " style={{padding:"20px"}}>Log in</Button>
-        <Button onClick={()=>navigate("/signup")} className="bg-[#014734] text-[#A4CD86] " style={{padding:"20px"}}>Start Now</Button>
+        <Button onClick={()=>navigate("/dashboard")} className="bg-[#014734] text-[#A4CD86] " style={{padding:"20px"}}>Start Now</Button>
       </div>
     </div>
   );
