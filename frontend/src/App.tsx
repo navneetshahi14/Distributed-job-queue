@@ -3,7 +3,11 @@ import LandingPage from "./components/LandingPage";
 import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
 import Dashboard from "./components/Dashboard/Dashboard";
-import MainBody from "./components/Dashboard/MainBody";
+import MainBody from "./components/Dashboard/utils/MainBody";
+import JobBoard from "./components/Dashboard/JobBoard";
+import WorkerBoard from "./components/Dashboard/WorkerBoard";
+import ApiKeyBoard from "./components/Dashboard/ApiKeyBoard";
+import Settings from "./components/Dashboard/Settings";
 
 function App() {
   return (
@@ -15,7 +19,10 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/dashboard">
             <Route index element={<Dashboard />} />
-            <Route path="mainbody" element={<MainBody />} />
+            <Route path="jobs" element={<JobBoard />} />
+            <Route path="workers" element={<WorkerBoard />} />
+            <Route path="apikey" element={<ApiKeyBoard />} />
+            <Route path="settings" element={<Settings />} />
           </Route>
         </Routes>
       </div>

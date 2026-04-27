@@ -1,16 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { CogIcon } from "lucide-react";
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const DashSidebar = () => {
   let location = useLocation();
+  let navigate = useNavigate()
 
   const dashMenu = [
     {
       icon: "",
       name: "Dashboard",
-      link: "/",
+      link: "",
     },
     {
       icon: "",
@@ -22,11 +23,11 @@ const DashSidebar = () => {
       name: "Workers",
       link: "/workers",
     },
-    {
-      icon: "",
-      name: "Failed Jobs",
-      link: "/failedJobs",
-    },
+    // {
+    //   icon: "",
+    //   name: "Failed Jobs",
+    //   link: "/failedJobs",
+    // },
     {
       icon: "",
       name: "API Key",
@@ -60,7 +61,7 @@ const DashSidebar = () => {
         style={{ margin: "0 0 30px 0" }}
         className="w-full flex justify-center"
       >
-        <Button className="bg-[#A4CD86] hover:bg-[#99d56e] text-[#014734] w-[80%] cursor-pointer flex items-center justify-center">
+        <Button onClick={()=>navigate("/dashboard/settings")} className="bg-[#A4CD86] hover:bg-[#99d56e] text-[#014734] w-[80%] cursor-pointer flex items-center justify-center">
           <CogIcon size={24} color="#014734" />
           <span>Setting</span>
         </Button>
